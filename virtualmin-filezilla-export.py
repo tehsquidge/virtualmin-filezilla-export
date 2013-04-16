@@ -32,29 +32,31 @@ tmpl = Template(u'''\
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <FileZilla3>
     <Servers>
-	{%- for site in sites %}
-        <Server>{{folder}}
-            <Host>{{site.domain}}</Host>
-            <Port>21</Port>
-            <Protocol>0</Protocol>
-            <Type>0</Type>
-            <User>{{site.user}}</User>
-            <Pass>{{ site.password }}</Pass>
-            <Logontype>1</Logontype>
-            <TimezoneOffset>0</TimezoneOffset>
-            <PasvMode>MODE_DEFAULT</PasvMode>
-            <MaximumMultipleConnections>0</MaximumMultipleConnections>
-            <EncodingType>Auto</EncodingType>
-            <BypassProxy>0</BypassProxy>
-            <Name>{{site.domain}}</Name>
-            <Comments></Comments>
-            <LocalDir></LocalDir>
-            <RemoteDir></RemoteDir>
-            <SyncBrowsing>0</SyncBrowsing>{{site.domain}}
-        </Server>
-	{%- endfor %}
+        <Folder>{{folder}}
+    	{%- for site in sites %}
+            <Server>
+                <Host>{{site.domain}}</Host>
+                <Port>21</Port>
+                <Protocol>0</Protocol>
+                <Type>0</Type>
+                <User>{{site.user}}</User>
+                <Pass>{{ site.password }}</Pass>
+                <Logontype>1</Logontype>
+                <TimezoneOffset>0</TimezoneOffset>
+                <PasvMode>MODE_DEFAULT</PasvMode>
+                <MaximumMultipleConnections>0</MaximumMultipleConnections>
+                <EncodingType>Auto</EncodingType>
+                <BypassProxy>0</BypassProxy>
+                <Name>{{site.domain}}</Name>
+                <Comments></Comments>
+                <LocalDir></LocalDir>
+                <RemoteDir></RemoteDir>
+                <SyncBrowsing>0</SyncBrowsing>{{site.domain}}
+            </Server>
+    	{%- endfor %}
+        </Folder>
     </Servers>
 </FileZilla3>
 ''')
 
-print tmpl.render( sites = sites, folder = hostname )
+print tmpl.render( sites = sites, folder = hostname+"-server" )
