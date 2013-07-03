@@ -5,6 +5,18 @@ import re
 import sys
 from jinja2 import Template
 import platform
+import argparse
+
+parser = argparse.ArgumentParser(description='Generate filezilla formatted xml from virtualmin')
+
+parser.add_argument('-p', '--port', default=22, help="the port to use")
+parser.add_argument('-t', '--protocol', default=0, help="the protocol to use: ftp - 0, sftp - 1")
+
+args = vars(parser.parse_args())
+
+port = args['port']
+protocol = args['protocol']
+
 
 hostname = platform.node()
 
@@ -36,8 +48,8 @@ tmpl = Template(u'''\
     	{%- for site in sites %}
             <Server>
                 <Host>{{site.domain}}</Host>
-                <Port>21</Port>
-                <Protocol>0</Protocol>
+                <Port>{{port}}</Port>
+                <Protocol>{{protocol}}</Protocol>
                 <Type>0</Type>
                 <User>{{site.user}}</User>
                 <Pass>{{ site.password }}</Pass>
@@ -59,4 +71,4 @@ tmpl = Template(u'''\
 </FileZilla3>
 ''')
 
-print tmpl.render( sites = sites, folder = hostname+"-server" )
+print tmpl.render( sites = sites, folder = hostname+"-server", port = port, protocol = protocol )
