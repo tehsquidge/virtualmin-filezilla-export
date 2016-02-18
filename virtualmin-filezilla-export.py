@@ -11,6 +11,8 @@ parser = argparse.ArgumentParser(description='Generate filezilla formatted xml f
 
 parser.add_argument('-p', '--port', default=22, help="the port to use")
 parser.add_argument('-t', '--protocol', default=0, help="the protocol to use: ftp - 0, sftp - 1")
+parser.add_argument('-s', '--host', default=None, help="the host to use for connecting to all vhosts. leave empty to use the domain for each vhost")
+
 
 args = vars(parser.parse_args())
 
@@ -25,13 +27,14 @@ virtualmin_dir = "/etc/webmin/virtual-server/domains/"
 sites = []
 for filename in os.listdir(virtualmin_dir):
 	file = open(virtualmin_dir + filename, "r")
-	domain = ""
+	domain = args['host']
 	user = ""
 	password = ""
 	for line in file:
-		dom_result = re.search("^dom=(.*)$",line)
-		if(dom_result):
-			domain = dom_result.group(1)
+		if(domain == None):
+			dom_result = re.search("^dom=(.*)$",line)
+			if(dom_result):
+				domain = dom_result.group(1)
 		user_result = re.search("^user=(.*)$",line)
 		if(user_result):
 			user = user_result.group(1)
